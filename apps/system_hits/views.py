@@ -57,6 +57,7 @@ def hit_create_view(request):
     return render(request, 'hits_create.html', {'form': form, 'error': error})
 
 @only_authenticated_user
+@group_required('Manager', 'Boss',raise_exception=True)
 def hit_update_failed(request, pk):
     hit = Hit.objects.get(pk=pk)
     hit.failed()
@@ -65,12 +66,14 @@ def hit_update_failed(request, pk):
     return redirect('/hits/')
 
 @only_authenticated_user
+@group_required('Manager', 'Boss', raise_exception=True)
 def hit_update_completed(request,pk):
     hit = Hit.objects.get(pk=pk)
     hit.completed()
     hit.save()
     messages.success(request, 'Hit actualizado!')
     return redirect('/hits/')
+
 
 @only_authenticated_user
 def hits_detail(request, pk):

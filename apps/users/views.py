@@ -83,7 +83,7 @@ def registeration_view(request):
 
 
 @only_authenticated_user
-@group_required('Manager', 'Boss',raise_exception=True)
+@group_required('Manager', 'Boss', raise_exception=True)
 def hitmen_view(request):
     user_type_manager = request.user.groups.all()[0].name == "Manager"
     user_type_boss = request.user.groups.all()[0].name == "Boss"
