@@ -1,0 +1,71 @@
+{% extends 'shared_layout/base.html' %}
+{% load filters %}
+{%block contents%}
+{%if message%}
+{% for message in messages %}
+         <div class="alert alert-success" role="alert">
+    {{message}}
+  </div>
+    {% endfor %}
+{%endif%}
+{% if request.user|has_group:"Manager:Boss" %}
+  <div class="d-grid gap-2 col-6 mx-auto p-4">
+    <a class="btn btn-primary" type="button" href="{% url 'system_hits:hits_create' %}">Crear Golpe</a>
+  </div>
+{% endif %}
+
+{% if page_obj.object_list.count > 0 %}
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Objetivo</th>
+      <th scope="col">Descripción</th>
+      <th scope="col">Creado por</th>
+      <th scope="col" class="text-center">Estado</th>
+      <th scope="col" class="text-center">Detalle</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for hit in page_obj %}
+   <tr>
+      <td>{{ hit.objetive_name|upper }}</td>
+      <td>{{ hit.description|upper }}</td>
+     <td>{{ hit.created_by.username|upper }}</td>
+     <td class="text-center">
+        <span class="badge rounded-pill bg-dark">{% if hit.state == "Failed" %} FALLIDO {% elif hit.state == "Assigned"%} ASIGNADO {% else %} COMPLETADO {% endif %}</span>
+
+     </td>
+
+     <td>
+       <a type="button" class="btn btn-secondary" href="{% url 'system_hits:hits_detail' pk=hit.pk %}">Ver detalle</a>
+     </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  <ul class="pagination">
+    {% if page_obj.page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.page_obj.has_next %}
+      <li><a href="?page={{ page_obj.page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% else %}
+     <div class="alert alert-info p-3" role="alert">
+        No dispone de golpes
+      </div>
+{% endif %}
+
+{%endblock contents%}

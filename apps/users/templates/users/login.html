@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends 'shared_layout/base.html' %}
+
+{%block title%}
+login
+{%endblock title%}
+
+{%block contents%}
+{%if error%}
+<div class="alert alert-danger" role="alert">
+    {{error}}
+</div>
+{%endif%}
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {%include 'users/form_snippets.html' with form=form%}
+    <input class="btn btn-primary" type="submit" value="Login">
+</form>
+
+<div class="my-2">
+    <small class="text-muted">
+        Necesitas registrarte ? <a class="ml-2" href="{%url 'users:registro'%}">Registrarse</a>
+    </small>
+</div>
+{%endblock contents%}

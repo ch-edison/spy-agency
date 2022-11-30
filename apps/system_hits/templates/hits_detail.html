@@ -1,0 +1,66 @@
+{% extends 'shared_layout/base.html' %}
+{% load filters %}
+{%block contents%}
+<form>
+  <fieldset disabled>
+    <legend>Golpe</legend>
+    <div class="mb-3">
+      <label class="form-label">Objetivo</label>
+      <input type="text" class="form-control" value="{{hit.objetive_name}}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Descripción</label>
+      <textarea type="text"class="form-control">{{hit.description}}</textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Estado</label>
+      {% if hit.state == "Assigned" %}
+        <span class="badge rounded-pill bg-primary">Asignado</span>
+      {% elif hit.state == "Failed"%}
+       <span class="badge rounded-pill bg-danger">Fallido</span>
+      {% else %}
+        <span class="badge rounded-pill bg-success">Completado</span>
+      {% endif %}
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+           <div class="mb-3">
+              <label for="disabledSelect" class="form-label">Creado por</label>
+              <select id="disabledSelect" class="form-select">
+                <option>{{hit.created_by.username}}</option>
+              </select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Asignado a</label>
+              <select class="form-select">
+                <option>{{hit.assigned_to.username}}</option>
+              </select>
+            </div>
+        </div>
+
+      </div>
+    </div>
+
+  </fieldset>
+  {% if hit.state == "Assigned" %}
+  <div class="container">
+   <div class="row justify-content-md-center">
+     <div class="col-md-auto">
+           <a type="button" class="btn btn-outline-danger" href="{% url 'system_hits:hits_failed' pk=hit.pk %}">Marcar fallido</a>
+            <a type="button" class="btn btn-outline-success" href="{% url 'system_hits:hits_completed' pk=hit.pk %}">Marcar completado</a>
+      </div>
+    </div>
+  </div>
+  {%endif%}
+    <div class="container p-3">
+   <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <a type="button" class="btn btn-outline-success" href="{% url 'system_hits:hits'%}">Volver</a>
+      </div>
+    </div>
+  </div>
+</form>
+{%endblock contents%}

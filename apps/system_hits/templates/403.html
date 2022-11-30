@@ -1,0 +1,14 @@
+{% extends 'shared_layout/base.html' %}
+{% load filters %}
+{%block contents%}
+<div class="d-flex align-items-center justify-content-center vh-100">
+            <div class="text-center">
+                <h1 class="display-1 fw-bold">403</h1>
+                <p class="fs-3"> <span class="text-danger">Opps!</span> Sin permisos.</p>
+                <p class="lead">
+                    No tienes permisos para ingresar a la página solicitada
+                  </p>
+                <a href="{%url 'system_hits:hits' %}" class="btn btn-primary">Ir al inicio</a>
+            </div>
+        </div>
+{%endblock contents%}

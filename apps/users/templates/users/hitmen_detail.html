@@ -1,0 +1,99 @@
+{% extends 'shared_layout/base.html' %}
+{% load filters %}
+{%block contents%}
+<form>
+  <fieldset disabled>
+    <legend>Sicario</legend>
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" value="{{hitmen.name}}">
+    </div>
+      <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="text" class="form-control" value="{{hitmen.email}}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Descripción</label>
+      <textarea type="text"class="form-control">{{hitmen.description}}</textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Estado</label>
+      {% if hitmen.state == "Active" %}
+        <span class="badge rounded-pill bg-primary">Activo</span>
+      {% elif hitmen.state == "Inactive"%}
+       <span class="badge rounded-pill bg-danger">Inactivo</span>
+      {% endif %}
+    </div>
+
+  </fieldset>
+    </form>
+      <div class="mb-3">
+      <label class="form-label">Lista de sicarios gestionados</label>
+        <form action="asign_hitman_to_manager/" method="post" novalidate>
+            {%csrf_token%}
+            <input type="hidden" name="manager" value="{{hitmen.pk}}">
+         <div class="container">
+          <div class="row">
+            <div class="col">
+              <select class="form-select" name="hitman_toasign" aria-label="Default select example">
+                  <option selected>Seleccione a quien asignar</option>
+                  {% for assig in hitmans %}
+                      <option value="{{assig.pk}}">{{assig.username}}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+              <button class="btn btn-primary" type="submit">Asignar sicario a Gerente</button>
+            </div>
+          </div>
+        </div>
+        </form>
+        </div>
+      <div class="container">
+      <div class="row">
+        <div class="col">
+           <div class="mb-3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for m in manager %}
+                <tr>
+                  <th>{{m.name}}</th>
+                  <td>{{m.email}}</td>
+                  <td>{{m.pk}}</td>
+                </tr>
+              {%endfor%}
+              </tbody>
+            </table>
+            </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+
+  {% if hitmen.state == "Active" %}
+  <div class="container">
+   <div class="row justify-content-md-center">
+     <div class="col-md-auto">
+            <a type="button" class="btn btn-outline-danger" href="{% url 'users:hitmen_inactive' pk=hitmen.pk %}">Inactivar al sicario</a>
+      </div>
+    </div>
+  </div>
+  {%endif%}
+    <div class="container p-3">
+   <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <a type="button" class="btn btn-outline-success" href="{% url 'users:hitmen'%}">Volver</a>
+      </div>
+    </div>
+  </div>
+
+{%endblock contents%}

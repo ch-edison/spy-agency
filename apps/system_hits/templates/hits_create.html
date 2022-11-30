@@ -1,0 +1,11 @@
+{% extends 'shared_layout/base.html' %}
+{% load filters %}
+{%block contents%}
+<h2>Crear golpe</h2>
+<form method="post" action="/hits/create/" novalidate>
+      {% csrf_token %}
+        {%include 'form_snippets.html' with form=form%}
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Regresar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+{%endblock contents%}

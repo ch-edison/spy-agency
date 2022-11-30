@@ -1,0 +1,58 @@
+{% extends 'shared_layout/base.html' %}
+{% load filters %}
+{%block contents%}
+
+{% if page_obj.object_list.count > 0 %}
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Correo electrónico</th>
+      <th scope="col">Descripción</th>
+      <th scope="col" class="text-center">Estado</th>
+      <th scope="col" class="text-center">Detalle</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for hitmen in page_obj %}
+   <tr>
+      <td>{{ hitmen.name|upper }}</td>
+      <td>{{ hitmen.email|upper }}</td>
+     <td>{{ hitmen.description|upper }}</td>
+     <td class="text-center">
+        <span class="badge rounded-pill bg-dark">{% if hitmen.state == "Active" %} ACTIVO {% else %} INACTIVO {% endif %}</span>
+
+     </td>
+     <td>
+       <a type="button" class="btn btn-secondary" href="{% url 'users:hitmen_detail' pk=hitmen.pk %}">Ver detalle</a>
+     </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  <ul class="pagination">
+    {% if page_obj.page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.page_obj.has_next %}
+      <li><a href="?page={{ page_obj.page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% else %}
+     <div class="alert alert-info p-3" role="alert">
+        No dispone de sicarios asignados
+      </div>
+{% endif %}
+
+{%endblock contents%}
