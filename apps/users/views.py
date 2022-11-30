@@ -127,5 +127,5 @@ def asign_hitman_to_manager(request):
 def hitmen_detail(request, pk):
     hitmen = User.objects.get(pk=pk)
     users_manager = User.objects.filter(manager=hitmen)
-    hitmans = User.objects.filter().exclude(pk=request.user.pk)
+    hitmans = User.objects.filter().exclude(pk__in=[request.user.pk, hitmen.pk])
     return render(request, 'users/hitmen_detail.html', {'hitmen': hitmen, 'manager': users_manager, "hitmans":hitmans})
