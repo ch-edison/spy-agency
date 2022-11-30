@@ -17,6 +17,7 @@ from .decorators import only_authenticated_user, redirect_authenticated_user, gr
 from apps.users.models import User
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.contrib.auth.models import Group
 
 
 @only_authenticated_user
@@ -61,6 +62,7 @@ def registeration_view(request):
             description = form.cleaned_data['description']
             email = form.cleaned_data['email']
             username = email.split("@")
+            username = username[0]
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
             user = User.objects.create_user(
@@ -71,6 +73,8 @@ def registeration_view(request):
             )
             user.set_password(password)
             user.save()
+            hitmen_group = Group.objects.get(name="Hitmen")
+            hitmen_group.user_set.add(user.pk)
             messages.success(request, 'Hitmen creado!')
             return redirect("users:login")
     else:

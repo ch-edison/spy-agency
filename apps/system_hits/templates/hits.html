@@ -21,6 +21,7 @@
       <th scope="col">Objetivo</th>
       <th scope="col">Descripción</th>
       <th scope="col">Creado por</th>
+      <th scope="col">Asignado a</th>
       <th scope="col" class="text-center">Estado</th>
       <th scope="col" class="text-center">Detalle</th>
     </tr>
@@ -31,6 +32,7 @@
       <td>{{ hit.objetive_name|upper }}</td>
       <td>{{ hit.description|upper }}</td>
      <td>{{ hit.created_by.username|upper }}</td>
+     <td>{{ hit.assigned_to.username|upper }}</td>
      <td class="text-center">
         <span class="badge rounded-pill bg-dark">{% if hit.state == "Failed" %} FALLIDO {% elif hit.state == "Assigned"%} ASIGNADO {% else %} COMPLETADO {% endif %}</span>
 

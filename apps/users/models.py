@@ -6,8 +6,8 @@ from django_fsm import FSMField, transition
 
 
 class User(AbstractUser):
-    name = models.CharField(_('Name'), blank=True, max_length=20)
-    description = models.CharField(_('Description'), blank=True, max_length=20)
+    name = models.CharField(_('Name'), blank=True, max_length=100)
+    description = models.CharField(_('Description'), blank=True, max_length=120)
     hits = models.ManyToManyField(Hit)
     manager = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     state = FSMField(default='Active')
